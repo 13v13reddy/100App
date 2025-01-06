@@ -1,15 +1,12 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #121212;
-    color: white;
+/* Prevent scrolling */
+html, body {
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    overflow: hidden; /* Disable scrolling */
+    height: 100%;
   }
   
+  /* Ensure the container fits within the viewport */
   .container {
     text-align: center;
     background-color: #1e1e1e;
@@ -19,8 +16,34 @@ body {
     width: 90%;
     max-width: 400px;
     margin: 20px auto;
+    overflow: hidden; /* Prevent internal overflow */
   }
   
+  /* Ensure the grid fits within the container */
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 5px;
+    margin-bottom: 20px;
+    max-height: calc(100vh - 300px); /* Adjust based on available space */
+    overflow: auto; /* Add scrollbar only for the grid if needed */
+  }
+  
+  /* Ensure cells are square and fit within the grid */
+  .cell {
+    width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 5px;
+    background-color: gray;
+    color: white;
+  }
+  
+  /* Ensure buttons and other elements fit within the container */
   .controls {
     margin-bottom: 20px;
     display: flex;
@@ -58,31 +81,11 @@ body {
   }
   
   #red-count {
-    color: #ff4d4d; /* Red color for the red count */
+    color: #ff4d4d;
   }
   
   #red-orders {
     color: #ff4d4d;
-  }
-  
-  .grid-container {
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    gap: 5px;
-    margin-bottom: 20px;
-  }
-  
-  .cell {
-    width: 100%;
-    aspect-ratio: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 12px;
-    font-weight: bold;
-    border-radius: 5px;
-    background-color: gray;
-    color: white;
   }
   
   .new-order {

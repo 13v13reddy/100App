@@ -51,8 +51,8 @@ function getColor(color) {
 function updateCounts() {
   greenCount = gridData.filter((color) => color === "green").length;
   redCount = gridData.filter((color) => color === "red").length;
-  greenCountDisplay.textContent = `Accepts: ${greenCount}`;
-  redCountDisplay.textContent = `Rejects: ${redCount}`;
+  greenCountDisplay.textContent = `Current: ${greenCount}`;
+  redCountDisplay.textContent = `Red: ${redCount}`;
   updateNextRedIndex(); // Update nextRedIndex after updating counts
   saveState(); // Save state after updating counts
 }
