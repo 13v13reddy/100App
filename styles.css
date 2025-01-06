@@ -1,10 +1,11 @@
-/* Prevent scrolling */
+/* Set the background to grey */
 html, body {
     margin: 0;
     padding: 0;
     overflow: hidden; /* Disable scrolling */
     height: 100%;
     touch-action: none; /* Disable touch actions like zooming */
+    background-color: #1e1d1d; /* Grey background */
   }
   
   /* Disable text selection */
@@ -18,7 +19,7 @@ html, body {
   /* Ensure the container fits within the viewport */
   .container {
     text-align: center;
-    background-color: #1e1e1e;
+    background-color: #1e1e1e; /* Dark grey for the container */
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
