@@ -4,6 +4,7 @@ html, body {
     padding: 0;
     overflow: hidden; /* Disable scrolling */
     height: 100%;
+    touch-action: none; /* Disable touch actions like zooming */
   }
   
   /* Disable text selection */
