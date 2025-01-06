@@ -33,7 +33,7 @@ function initializeGrid() {
   newOrder.style.backgroundColor = getColor(newOrderColor);
   updateCounts();
   updateNextRedIndex(); // Update nextRedIndex on initialization
-  updateLastUpdated(); // Update last updated date and time
+  lastUpdatedDisplay.textContent = `Last Updated: ${lastUpdated}`; // Display saved last updated time
 }
 
 // Get color for a cell
