@@ -6,6 +6,7 @@ const redOrdersDisplay = document.getElementById("red-orders");
 const resetButton = document.getElementById("reset-button");
 const undoButton = document.getElementById("undo-button");
 const updateButton = document.getElementById("update-button");
+const lastUpdatedDisplay = document.getElementById("last-updated"); // New element
 
 // Load state from localStorage or initialize default values
 let gridData = JSON.parse(localStorage.getItem("gridData")) || Array(100).fill("blank");
@@ -14,6 +15,7 @@ let greenCount = JSON.parse(localStorage.getItem("greenCount")) || 0;
 let redCount = JSON.parse(localStorage.getItem("redCount")) || 0;
 let nextRedIndex = JSON.parse(localStorage.getItem("nextRedIndex")) || 101;
 let newOrderColor = JSON.parse(localStorage.getItem("newOrderColor")) || "blank";
+let lastUpdated = JSON.parse(localStorage.getItem("lastUpdated")) || "Never"; // New variable
 
 let timer = null;
 let timeRemaining = 1;
@@ -31,6 +33,7 @@ function initializeGrid() {
   newOrder.style.backgroundColor = getColor(newOrderColor);
   updateCounts();
   updateNextRedIndex(); // Update nextRedIndex on initialization
+  updateLastUpdated(); // Update last updated date and time
 }
 
 // Get color for a cell
@@ -51,8 +54,8 @@ function getColor(color) {
 function updateCounts() {
   greenCount = gridData.filter((color) => color === "green").length;
   redCount = gridData.filter((color) => color === "red").length;
-  greenCountDisplay.textContent = `Acceptance: ${greenCount}`;
-  redCountDisplay.textContent = `Rejects: ${redCount}`;
+  greenCountDisplay.textContent = `Current: ${greenCount}`;
+  redCountDisplay.textContent = `Red: ${redCount}`;
   updateNextRedIndex(); // Update nextRedIndex after updating counts
   saveState(); // Save state after updating counts
 }
@@ -68,6 +71,7 @@ function updateNewOrder() {
     stopTimer();
   }
   updateCounts();
+  updateLastUpdated(); // Update last updated date and time
 }
 
 // Get next color
@@ -118,6 +122,7 @@ function shiftLeft() {
   updateCounts();
   updateNextRedIndex(); // Update nextRedIndex after shifting
   initializeGrid();
+  updateLastUpdated(); // Update last updated date and time
 }
 
 // Check if shift is valid
@@ -150,6 +155,15 @@ function resetGrid() {
   timeRemaining = 1;
   stopTimer();
   initializeGrid();
+  updateLastUpdated(); // Update last updated date and time
+}
+
+// Update last updated date and time
+function updateLastUpdated() {
+  const now = new Date();
+  lastUpdated = now.toLocaleString(); // Format date and time
+  lastUpdatedDisplay.textContent = `Last Updated: ${lastUpdated}`;
+  saveState(); // Save state after updating last updated date and time
 }
 
 // Save current state to localStorage
@@ -160,6 +174,7 @@ function saveState() {
   localStorage.setItem("redCount", JSON.stringify(redCount));
   localStorage.setItem("nextRedIndex", JSON.stringify(nextRedIndex));
   localStorage.setItem("newOrderColor", JSON.stringify(newOrderColor));
+  localStorage.setItem("lastUpdated", JSON.stringify(lastUpdated)); // Save last updated date and time
 }
 
 // Undo last action
@@ -169,6 +184,7 @@ function undoLastAction() {
     initializeGrid(); // Update the UI
     updateCounts(); // Update counts after undo
     updateNextRedIndex(); // Update nextRedIndex after undo
+    updateLastUpdated(); // Update last updated date and time
     saveState(); // Save state after undo
   }
 }
