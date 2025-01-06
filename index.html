@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Colorful Grid</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="controls">
+      <button id="reset-button">Reset</button>
+      <button id="undo-button">Undo</button>
+    </div>
+    <div class="counters">
+      <div id="green-count">Accepts: 0</div>
+      <div id="red-count">Rejects: 0</div>
+      <div id="red-orders">Next Reject at: -</div> <!-- Updated label -->
+    </div>
+    <div class="grid-container" id="grid-container">
+      <!-- Grid cells will be dynamically added here -->
+    </div>
+    <div id="new-order" class="new-order">New Order</div>
+    <button id="update-button">Update</button>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
