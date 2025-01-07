@@ -6,7 +6,7 @@ const redOrdersDisplay = document.getElementById("red-orders");
 const resetButton = document.getElementById("reset-button");
 const undoButton = document.getElementById("undo-button");
 const updateButton = document.getElementById("update-button");
-const lastUpdatedDisplay = document.getElementById("last-updated"); // New element
+const lastUpdatedDisplay = document.getElementById("last-updated");
 
 // Load state from localStorage or initialize default values
 let gridData = JSON.parse(localStorage.getItem("gridData")) || Array(100).fill("blank");
@@ -15,7 +15,7 @@ let greenCount = JSON.parse(localStorage.getItem("greenCount")) || 0;
 let redCount = JSON.parse(localStorage.getItem("redCount")) || 0;
 let nextRedIndex = JSON.parse(localStorage.getItem("nextRedIndex")) || 101;
 let newOrderColor = JSON.parse(localStorage.getItem("newOrderColor")) || "blank";
-let lastUpdated = JSON.parse(localStorage.getItem("lastUpdated")) || "Never"; // New variable
+let lastUpdated = localStorage.getItem("lastUpdated") ? new Date(JSON.parse(localStorage.getItem("lastUpdated"))) : null; // Parse as Date object
 
 let timer = null;
 let timeRemaining = 1;
@@ -33,7 +33,7 @@ function initializeGrid() {
   newOrder.style.backgroundColor = getColor(newOrderColor);
   updateCounts();
   updateNextRedIndex(); // Update nextRedIndex on initialization
-  lastUpdatedDisplay.textContent = `Last Updated: ${lastUpdated}`; // Display saved last updated time
+  updateLastUpdatedDisplay(); // Display the time difference
 }
 
 // Get color for a cell
@@ -54,8 +54,8 @@ function getColor(color) {
 function updateCounts() {
   greenCount = gridData.filter((color) => color === "green").length;
   redCount = gridData.filter((color) => color === "red").length;
-  greenCountDisplay.textContent = `Acceptance: ${greenCount}`;
-  redCountDisplay.textContent = `Rejects: ${redCount}`;
+  greenCountDisplay.textContent = `Current: ${greenCount}`;
+  redCountDisplay.textContent = `Red: ${redCount}`;
   updateNextRedIndex(); // Update nextRedIndex after updating counts
   saveState(); // Save state after updating counts
 }
@@ -71,7 +71,7 @@ function updateNewOrder() {
     stopTimer();
   }
   updateCounts();
-  updateLastUpdated(); // Update last updated date and time
+  updateLastUpdated(); // Update last updated timestamp
 }
 
 // Get next color
@@ -122,7 +122,7 @@ function shiftLeft() {
   updateCounts();
   updateNextRedIndex(); // Update nextRedIndex after shifting
   initializeGrid();
-  updateLastUpdated(); // Update last updated date and time
+  updateLastUpdated(); // Update last updated timestamp
 }
 
 // Check if shift is valid
@@ -155,15 +155,35 @@ function resetGrid() {
   timeRemaining = 1;
   stopTimer();
   initializeGrid();
-  updateLastUpdated(); // Update last updated date and time
+  updateLastUpdated(); // Update last updated timestamp
 }
 
-// Update last updated date and time
+// Update last updated timestamp
 function updateLastUpdated() {
+  lastUpdated = new Date(); // Store the current timestamp
+  saveState(); // Save state after updating last updated timestamp
+  updateLastUpdatedDisplay(); // Update the display
+}
+
+// Calculate and display the time difference
+function updateLastUpdatedDisplay() {
+  if (!lastUpdated) {
+    lastUpdatedDisplay.textContent = "Last Updated: Never";
+    return;
+  }
+
   const now = new Date();
-  lastUpdated = now.toLocaleString(); // Format date and time
-  lastUpdatedDisplay.textContent = `Last Updated: ${lastUpdated}`;
-  saveState(); // Save state after updating last updated date and time
+  const diffInMilliseconds = now - lastUpdated;
+  const diffInMinutes = Math.floor(diffInMilliseconds / (1000 * 60));
+  const diffInHours = Math.floor(diffInMilliseconds / (1000 * 60 * 60));
+
+  if (diffInMinutes < 1) {
+    lastUpdatedDisplay.textContent = "Last Updated: Just now";
+  } else if (diffInMinutes < 60) {
+    lastUpdatedDisplay.textContent = `Last Updated: ${diffInMinutes} minute${diffInMinutes === 1 ? "" : "s"} ago`;
+  } else {
+    lastUpdatedDisplay.textContent = `Last Updated: ${diffInHours} hour${diffInHours === 1 ? "" : "s"} ago`;
+  }
 }
 
 // Save current state to localStorage
@@ -174,7 +194,7 @@ function saveState() {
   localStorage.setItem("redCount", JSON.stringify(redCount));
   localStorage.setItem("nextRedIndex", JSON.stringify(nextRedIndex));
   localStorage.setItem("newOrderColor", JSON.stringify(newOrderColor));
-  localStorage.setItem("lastUpdated", JSON.stringify(lastUpdated)); // Save last updated date and time
+  localStorage.setItem("lastUpdated", JSON.stringify(lastUpdated)); // Save last updated timestamp
 }
 
 // Undo last action
@@ -184,7 +204,7 @@ function undoLastAction() {
     initializeGrid(); // Update the UI
     updateCounts(); // Update counts after undo
     updateNextRedIndex(); // Update nextRedIndex after undo
-    updateLastUpdated(); // Update last updated date and time
+    updateLastUpdated(); // Update last updated timestamp
     saveState(); // Save state after undo
   }
 }
